@@ -9,8 +9,9 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Startup/subdir.mk
--include Src/subdir.mk
+-include Drivers/STM32L4xx_HAL_Driver/Src/subdir.mk
+-include Core/Startup/subdir.mk
+-include Core/Src/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -33,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := CatFeeder
+BUILD_ARTIFACT_NAME := LEDTest
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-CatFeeder.elf \
+LEDTest.elf \
 
 MAP_FILES += \
-CatFeeder.map \
+LEDTest.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-CatFeeder.list \
+LEDTest.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: CatFeeder.elf secondary-outputs
+main-build: LEDTest.elf secondary-outputs
 
 # Tool invocations
-CatFeeder.elf CatFeeder.map: $(OBJS) $(USER_OBJS) C:\Users\Johnb\STM32CubeIDE\workspace_1.13.1\CatFeeder\STM32L432KCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "CatFeeder.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Johnb\STM32CubeIDE\workspace_1.13.1\CatFeeder\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CatFeeder.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+LEDTest.elf LEDTest.map: $(OBJS) $(USER_OBJS) C:\Users\Johnb\STM32CubeIDE\workspace_1.13.1\LEDTest\STM32L432KCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "LEDTest.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Johnb\STM32CubeIDE\workspace_1.13.1\LEDTest\STM32L432KCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LEDTest.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -69,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-CatFeeder.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "CatFeeder.list"
+LEDTest.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "LEDTest.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) CatFeeder.elf CatFeeder.list CatFeeder.map default.size.stdout
+	-$(RM) LEDTest.elf LEDTest.list LEDTest.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
